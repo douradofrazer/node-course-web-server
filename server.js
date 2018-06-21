@@ -1,7 +1,10 @@
 const express = require('express');
 const hbs = require('hbs');
+const fs = require('fs');
 
-let app = express();
+const port = process.env.PORT || 3000;
+
+let app = express();    
 
 hbs.registerPartials(__dirname+"/views/partials")
 app.set('view engine','hbs');
@@ -10,8 +13,11 @@ app.use(express.static(__dirname + '/public'));
 //middleware function
 app.use((req, res, next)=>{
     let now = new Date().toString();
-
-    console.log(`${now}: ${req.method} ${req.url}`);
+    let log = `${now}: ${req.method} ${req.url}`;
+    console.log(log);
+    fs.appendFile('server.log',log+'\n',(err)=>{
+        console.log('Could not log request!');
+    });
     next();
 });
 
@@ -49,4 +55,4 @@ app.get('/bad',(req,res)=> {
           })
     });
 
-app.listen(3000,()=>console.log('Example app listening on port 3000!'));
+app.listen(port,()=>console.log(`Example app listening on port ${port}!`));
