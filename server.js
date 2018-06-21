@@ -16,7 +16,7 @@ app.use((req, res, next)=>{
     let log = `${now}: ${req.method} ${req.url}`;
     console.log(log);
     fs.appendFile('server.log',log+'\n',(err)=>{
-        console.log('Could not log request!');
+
     });
     next();
 });
@@ -47,6 +47,14 @@ app.get('/about',(req,res)=> {
             pageTitle : 'About Page'
         });
     })
+
+app.get('/contact',(req,res) => {
+        res.render('contact.hbs',{
+            pageTitle : 'Contact Us',
+            address : '1219 N 13th St, Kansas City, KS 66102, USA',
+            phone : '1234567891'
+        });
+});
 
 app.get('/bad',(req,res)=> {
           res.send({
